@@ -1,8 +1,10 @@
 module booth_multiplier(
     input wire signed [3:0] multiplier, 
     input wire signed [3:0] multiplicand,
-    input wire compute,
+    input wire CLK,     // Global Clock
+    input wire TCLK,    // Transmit Clock
     input wire rst,
+    output reg tx,
     output wire signed [7:0] product);
 
     reg signed [3:0] acc;
@@ -11,8 +13,13 @@ module booth_multiplier(
 	reg q_minus;
     reg q_minus_temp;
 
+    // serial transfer variable:
+    integer selector;
+
+
     integer i;
-    always @(posedge compute or posedge rst)
+    always @(posedge CLK or posedge rst)
+    
     begin
         if (rst)
         begin
@@ -49,6 +56,23 @@ module booth_multiplier(
                 acc = acc>>>1;
             end
         end
+    end
+
+    always @(posedge TCLK) begin
+
+        if(selector == 0)
+            tx = 1'b0;
+        else if (selector == 9)
+            tx = 1'b1;
+        else if(selector == 10)
+            tx = 1'b1;
+        else
+            tx = product[selector - 1];
+
+        if(selector < 10) 
+            selector = selector + 1;
+        else
+            selector = 0;
     end
 
     assign product[7:4] = acc;
