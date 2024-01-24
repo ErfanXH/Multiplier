@@ -16,18 +16,9 @@ module booth_multiplier(
     integer selector;
 
     integer i;
-    always @(multiplier or multiplicand or posedge rst)
+    always @(multiplier or multiplicand)
     
     begin
-        if (rst)
-        begin
-            acc = 0;
-            Q = 0;
-            q_minus = 0;
-            selector = 0;
-        end
-
-        else
         begin
             Q = multiplier;
             for (i = 0; i < 4; i = i + 1)

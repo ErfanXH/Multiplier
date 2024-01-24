@@ -19,49 +19,36 @@ module multiplier_tb;
 		.multiplier(multiplier), 
 		.multiplicand(multiplicand), 
 		.CLK(CLK), 
-		.TCLK(TCLK), 
 		.rst(rst), 
 		.tx(tx), 
 		.product(product)
 	);
 
-	always begin
-		#15;
+	initial begin
 		CLK = 0;
-		#15;
-		CLK = 1;
-	end
-	
-	always begin
-		#2;
-		TCLK = 0;
-		#2;
-		TCLK = 1;
+		forever #10 CLK = ~CLK;
 	end
 
 	initial begin
-		// Initialize Inputs
-		rst = 1;
-		multiplier = 0;
-		multiplicand = 0;
+		$dumpfile("waveform.vcd");
+    	$dumpvars(0, multiplier_tb);
+		
+		multiplier = 4'b0111;	// 7
+		multiplicand = 4'b1110;	// -2
+		#800;
 
-		#10;
-		rst = 0;
-		#100;
-
-		multiplier = 4'b0111;
-		multiplicand = 4'b1110;
-
-		#100;
+		multiplier = 4'b1111;	// -1
+		multiplicand = 4'b0010;	// 2
+		#800;
         
 		// Add stimulus here
 		$finish;	
 	end
 
-	initial begin
-		$monitor("Time: %b, Multiplier: %b, Multiplicand: %b, Product: %b, TX: %b", $time, multiplier, multiplicand, product, tx);
-		#200;
-		$finish;
-	end
+	// initial begin
+	// 	$monitor("Time: %b, Multiplier: %b, Multiplicand: %b, Product: %b, TX: %b", $time, multiplier, multiplicand, product, tx);
+	// 	#200;
+	// 	$finish;
+	// end
       
 endmodule
