@@ -8,7 +8,6 @@ module multiplier_tb;
 	reg [3:0] multiplicand;
 	reg CLK;
 	reg TCLK;
-	reg rst;
 
 	// Outputs
 	wire tx;
@@ -18,8 +17,7 @@ module multiplier_tb;
 	booth_multiplier uut (
 		.multiplier(multiplier), 
 		.multiplicand(multiplicand), 
-		.CLK(CLK), 
-		.rst(rst), 
+		.CLK(CLK),
 		.tx(tx), 
 		.product(product)
 	);
@@ -33,6 +31,7 @@ module multiplier_tb;
 		$dumpfile("waveform.vcd");
     	$dumpvars(0, multiplier_tb);
 		
+		product 
 		multiplier = 4'b0111;	// 7
 		multiplicand = 4'b1110;	// -2
 		#800;

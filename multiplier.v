@@ -2,7 +2,6 @@ module booth_multiplier(
     input wire signed [3:0] multiplier, 
     input wire signed [3:0] multiplicand,
     input wire CLK,     // Global Clock
-    input wire rst,
     output reg tx,
     output wire signed [7:0] product);
 
@@ -16,35 +15,33 @@ module booth_multiplier(
     integer selector;
 
     integer i;
-    always @(multiplier or multiplicand)
-    
-    begin
+    always @(multiplier or multiplicand) begin
+        acc = 0;
+        q_minus = 0;
+        Q = multiplier;
+        for (i = 0; i < 4; i = i + 1)
         begin
-            Q = multiplier;
-            for (i = 0; i < 4; i = i + 1)
+            q_minus_temp = q_minus;
+            Q_temp = Q;
+
+            q_minus = Q[0];
+            Q = Q>>1;
+
+            if(Q_temp[0] != q_minus_temp)
             begin
-                q_minus_temp = q_minus;
-                Q_temp = Q;
-
-                q_minus = Q[0];
-                Q = Q>>1;
-
-                if(Q_temp[0] != q_minus_temp)
+                if (Q_temp[0] == 0)
                 begin
-                    if (Q_temp[0] == 0)
-                    begin
-                        acc = acc + multiplicand;
-                    end
-
-                    else
-                    begin
-                        acc = acc - multiplicand;
-                    end
+                    acc = acc + multiplicand;
                 end
 
-                Q[3] = acc[0];
-                acc = acc>>>1;
+                else
+                begin
+                    acc = acc - multiplicand;
+                end
             end
+
+            Q[3] = acc[0];
+            acc = acc>>>1;
         end
     end
 
