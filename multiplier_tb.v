@@ -30,17 +30,15 @@ module multiplier_tb;
 		$dumpfile("waveform.vcd");
     	$dumpvars(0, multiplier_tb);
 		
-		multiplier = 4'b0111;	// 7
-		multiplicand = 4'b1110;	// -2
-		#110;
+		multiplier = 4'b1111;	// 7
+		multiplicand = 4'b1111;	// -2
+		#410;
 
 		multiplier = 4'b1111;	// -1
 		multiplicand = 4'b0010;	// 2
-		#110;
+		#410;
 		
-		multiplier = 4'b1111;	// 7
-		multiplicand = 4'b1111;	// -2
-		#110;
+		
         
 		// Add stimulus here
 		$finish;	
