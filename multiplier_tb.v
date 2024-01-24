@@ -28,8 +28,8 @@ module multiplier_tb;
 		$dumpfile("wave.vcd");
     	$dumpvars(0, multiplier_tb);
 		
-		multiplier = 4'b1111;	// 7
-		multiplicand = 4'b1111;	// -2
+		multiplier = 4'b1111;	// -1
+		multiplicand = 4'b1111;	// -1
 		#410;
 
 		multiplier = 4'b1111;	// -1
