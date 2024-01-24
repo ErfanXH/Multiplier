@@ -14,6 +14,10 @@ module booth_multiplier(
     // serial transfer variable:
     integer selector;
 
+    initial begin
+        selector = 0;
+    end
+
     integer i;
     always @(multiplier or multiplicand) begin
         acc = 0;

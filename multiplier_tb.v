@@ -7,7 +7,6 @@ module multiplier_tb;
 	reg [3:0] multiplier;
 	reg [3:0] multiplicand;
 	reg CLK;
-	reg TCLK;
 
 	// Outputs
 	wire tx;
@@ -31,23 +30,20 @@ module multiplier_tb;
 		$dumpfile("waveform.vcd");
     	$dumpvars(0, multiplier_tb);
 		
-		product 
 		multiplier = 4'b0111;	// 7
 		multiplicand = 4'b1110;	// -2
-		#800;
+		#110;
 
 		multiplier = 4'b1111;	// -1
 		multiplicand = 4'b0010;	// 2
-		#800;
+		#110;
+		
+		multiplier = 4'b1111;	// 7
+		multiplicand = 4'b1111;	// -2
+		#110;
         
 		// Add stimulus here
 		$finish;	
 	end
-
-	// initial begin
-	// 	$monitor("Time: %b, Multiplier: %b, Multiplicand: %b, Product: %b, TX: %b", $time, multiplier, multiplicand, product, tx);
-	// 	#200;
-	// 	$finish;
-	// end
       
 endmodule
