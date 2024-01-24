@@ -1,4 +1,5 @@
 `timescale 1ns / 1ps
+`include "multiplier.v"
 
 module multiplier_tb;
 
@@ -14,7 +15,7 @@ module multiplier_tb;
 	wire [7:0] product;
 
 	// Instantiate the Unit Under Test (UUT)
-	main uut (
+	booth_multiplier uut (
 		.multiplier(multiplier), 
 		.multiplicand(multiplicand), 
 		.CLK(CLK), 
@@ -25,37 +26,42 @@ module multiplier_tb;
 	);
 
 	always begin
-		#15
+		#15;
 		CLK = 0;
-		#15
+		#15;
 		CLK = 1;
 	end
 	
 	always begin
-		#2
+		#2;
 		TCLK = 0;
-		#2
+		#2;
 		TCLK = 1;
 	end
 
 	initial begin
 		// Initialize Inputs
-		
+		rst = 1;
 		multiplier = 0;
 		multiplicand = 0;
-		rst = 1;
 
-		#1
-		
+		#10;
 		rst = 0;
+		#100;
+
 		multiplier = 4'b0111;
 		multiplicand = 4'b1110;
 
-		// Wait 100 ns for global reset to finish
 		#100;
         
 		// Add stimulus here
+		$finish;	
+	end
 
+	initial begin
+		$monitor("Time: %b, Multiplier: %b, Multiplicand: %b, Product: %b, TX: %b", $time, multiplier, multiplicand, product, tx);
+		#200;
+		$finish;
 	end
       
 endmodule

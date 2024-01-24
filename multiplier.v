@@ -2,7 +2,6 @@ module booth_multiplier(
     input wire signed [3:0] multiplier, 
     input wire signed [3:0] multiplicand,
     input wire CLK,     // Global Clock
-    input wire TCLK,    // Transmit Clock
     input wire rst,
     output reg tx,
     output wire signed [7:0] product);
@@ -16,9 +15,8 @@ module booth_multiplier(
     // serial transfer variable:
     integer selector;
 
-
     integer i;
-    always @(posedge CLK or posedge rst)
+    always @(multiplier or multiplicand or posedge rst)
     
     begin
         if (rst)
@@ -26,6 +24,7 @@ module booth_multiplier(
             acc = 0;
             Q = 0;
             q_minus = 0;
+            selector = 0;
         end
 
         else
@@ -58,21 +57,22 @@ module booth_multiplier(
         end
     end
 
-    always @(posedge TCLK) begin
+    always @(posedge CLK) begin
 
-        if(selector == 0)
+        if(selector == 0) begin
             tx = 1'b0;
-        else if (selector == 9)
-            tx = 1'b1;
-        else if(selector == 10)
-            tx = 1'b1;
-        else
-            tx = product[selector - 1];
-
-        if(selector < 10) 
             selector = selector + 1;
-        else
+        end
+        else if (selector == 9) begin
+            tx = 1'b1;
             selector = 0;
+        end
+        else begin
+            tx = product[selector - 1];
+            //$display("selector = %b product[%b] = %b tx = %b", selector, selector, product[selector], tx);
+            selector = selector + 1;
+        end
+        
     end
 
     assign product[7:4] = acc;
