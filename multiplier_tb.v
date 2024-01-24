@@ -3,12 +3,10 @@
 
 module multiplier_tb;
 
-	// Inputs
 	reg [3:0] multiplier;
 	reg [3:0] multiplicand;
 	reg CLK;
 
-	// Outputs
 	wire tx;
 	wire [7:0] product;
 
@@ -27,7 +25,7 @@ module multiplier_tb;
 	end
 
 	initial begin
-		$dumpfile("waveform.vcd");
+		$dumpfile("wave.vcd");
     	$dumpvars(0, multiplier_tb);
 		
 		multiplier = 4'b1111;	// 7
@@ -38,9 +36,6 @@ module multiplier_tb;
 		multiplicand = 4'b0010;	// 2
 		#410;
 		
-		
-        
-		// Add stimulus here
 		$finish;	
 	end
       
